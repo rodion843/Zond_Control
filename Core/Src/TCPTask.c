@@ -44,10 +44,7 @@ void TCP_RxThread(void* arg){
 	err_t err;
 	struct ip4_addr ClientAddr;
 	uint16_t ClientPort;
-	netconn_getaddr(nc, &ClientAddr, &ClientPort, 0);         //?????????, ??? ? ??? ???????????
 
-	//TaskHandle_t TX_Task = xTaskCreateStatic(TCP_TxThread, "TCP Tx Task", 1024, (void*)nc, osPriorityNormal, TCP_Tx_Stack, &TCP_Tx_Task_Buffer );
-//	//printf("MCU: new task NORM, connected IP: %s\r\n", ip4addr_ntoa(&ClientAddr));
 	while(true)
 	{
 		err = netconn_recv(nc, &nb);
@@ -55,8 +52,6 @@ void TCP_RxThread(void* arg){
 		if(err != ERR_OK)
 		{
 			//printf("MCU: recv error: %d; freeing heap\r\n",err);
-//			HAL_TIM_Base_Stop_IT(&htim13);
-//			vTaskDelete(TX_Task);
 			netconn_close(nc);
 			Head_Motors_STOP();
 			netbuf_delete(nb);
@@ -73,9 +68,7 @@ void TCP_RxThread(void* arg){
 
 		memcpy(Rx_msg, nb->p->payload, len);
 		char* search = Rx_msg;
-
-//		search = memchr(search, 'e', len);
-//		RxDriver((uint8_t*)search + 1);
+		
 		while((search != NULL) && (search != &Rx_msg[len])){
 			RxParser((CMD_IDs)*(search + 1), (uint8_t*)search + 2);
 			search++; //search += SizeOf(CMD_IDs);
@@ -121,7 +114,6 @@ void RxParser(CMD_IDs id, uint8_t *x){
 	//    HAL_CAN_AddTxMessage(&hcan1, &TxHeader, &x, &TxMailbox);          //CAN BUS
 	switch (id){
 	case SWIR_Filter_ID:
-		status_reg ^= 1UL << SWIR_Filter;
 		SWIR_Filter_Driver();
 	break;
 	case SWIR_Lens_ID:

@@ -95,10 +95,14 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
   /* USER CODE BEGIN HardFault_IRQn 0 */
-
+	  osKernelInitialize();  /* Call init function for freertos objects (in freertos.c) */
+	  MX_FREERTOS_Init();
+	  /* Start scheduler */
+	  osKernelStart();
   /* USER CODE END HardFault_IRQn 0 */
   while (1)
   {
+	  NVIC_SystemReset();
     /* USER CODE BEGIN W1_HardFault_IRQn 0 */
 #ifndef DEBUG
 	  NVIC_SystemReset();

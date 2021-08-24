@@ -62,6 +62,7 @@
 void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
+void PCB_Init();
 void Switch_Init(void);
 void TV_Block_Init(void);
 void Sync_Angles(void);
@@ -117,6 +118,9 @@ int main(void)
   Switch_Init();
   TV_Block_Init();
   Sync_Angles();
+
+  PCB_Init();
+
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -184,8 +188,15 @@ void SystemClock_Config(void)
 void Switch_Init(){
 	//todo do it in async way?
 	  HAL_GPIO_WritePin(Switch_GPIO_Port, Switch_Pin, GPIO_PIN_SET);
-	  status_reg |= Switch_Power;
-	  HAL_Delay(5000);
+	  HAL_Delay(5000);  //switch needs some time to initialize
+}
+void PCB_Init(){
+  TV_Camera_On();
+  LWIR_Camera_On();
+  LWIR_Driver_On();
+  SWIR_Driver_On();
+  SWIR_Camera_On();
+  SWIR_BIS_PAL_On();
 }
 void TV_Block_Init(){
 	//todo: камеру в дневной режим.
@@ -202,11 +213,11 @@ void Sync_Angles(void){
 	memcpy(&can_data[1], &i2c_data[4], 4);
 	HAL_CAN_AddTxMessage(&hcan1, &TxHeader, can_data, &TxMailbox);
 }
-//int __io_putchar(int ch)
-//{
-//	HAL_UART_Transmit(&huart1, (uint8_t*)&ch, 1, 0xffff);
-//	return ch;
-//}
+// int __io_putchar(int ch)
+// {
+// 	HAL_UART_Transmit(&huart1, (uint8_t*)&ch, 1, 0xffff);
+// 	return ch;
+// }
 /* USER CODE END 4 */
 
  /**

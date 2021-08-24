@@ -140,6 +140,53 @@ void Error_Handler(void);
 #define Motors_Package_Size 3
 
 #define Ethernet_Package 'e'
+  TV_Camera_On();
+  LWIR_Camera_On();
+  LWIR_Driver_On();
+  SWIR_Driver_On();
+  SWIR_Camera_On();
+  SWIR_BIS_PAL_On();
+static inline void TV_Camera_On(){
+  HAL_GPIO_WritePin(TV_CAM_GPIO_Port, TV_CAM_Pin, GPIO_PIN_SET);
+}
+static inline void TV_Camera_Off(){
+  HAL_GPIO_WritePin(TV_CAM_GPIO_Port, TV_CAM_Pin, GPIO_PIN_RESET);
+}
+
+static inline void LWIR_Camera_On(){
+  HAL_GPIO_WritePin(LWIR_POWER_GPIO_Port, LWIR_POWER_Pin, GPIO_PIN_SET);
+}
+static inline void LWIR_Camera_Off(){
+  HAL_GPIO_WritePin(LWIR_POWER_GPIO_Port, LWIR_POWER_Pin, GPIO_PIN_RESET);
+}
+
+static inline void LWIR_Driver_On(){
+  HAL_GPIO_WritePin(LWIR_CTRL_GPIO_Port, LWIR_CTRL_Pin, GPIO_PIN_SET);
+}
+static inline void LWIR_Driver_Off(){
+  HAL_GPIO_WritePin(LWIR_CTRL_GPIO_Port, LWIR_CTRL_Pin, GPIO_PIN_RESET);
+}
+
+static inline void SWIR_Driver_On(){
+  HAL_GPIO_WritePin(SWIR_CTRL_GPIO_Port, SWIR_CTRL_Pin, GPIO_PIN_SET);
+}
+static inline void SWIR_Driver_Off(){
+  HAL_GPIO_WritePin(SWIR_CTRL_GPIO_Port, SWIR_CTRL_Pin, GPIO_PIN_RESET);
+}
+
+static inline void SWIR_Camera_On(){
+  HAL_GPIO_WritePin(SWIR_POWER_GPIO_Port, SWIR_POWER_Pin, GPIO_PIN_SET);
+}
+static inline void SWIR_Camera_Off(){
+  HAL_GPIO_WritePin(SWIR_POWER_GPIO_Port, SWIR_POWER_Pin, GPIO_PIN_RESET);
+}
+
+static inline void SWIR_BIS_PAL_On(){
+  HAL_GPIO_WritePin(SWIR_BIS_PAL_GPIO_Port, SWIR_BIS_PAL_Pin, GPIO_PIN_SET);
+}
+static inline void SWIR_BIS_PAL_Off(){
+  HAL_GPIO_WritePin(SWIR_BIS_PAL_GPIO_Port, SWIR_BIS_PAL_Pin, GPIO_PIN_RESET);
+}
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
